@@ -1,12 +1,13 @@
-import time
 import multiprocessing
-from proxypool.processors.server import app
+import time
+
+from loguru import logger
+
 from proxypool.processors.getter import Getter
+from proxypool.processors.server import app
 from proxypool.processors.tester import Tester
 from proxypool.setting import CYCLE_GETTER, CYCLE_TESTER, API_HOST, API_THREADED, API_PORT, ENABLE_SERVER, \
     ENABLE_GETTER, ENABLE_TESTER, IS_WINDOWS
-from loguru import logger
-
 
 if IS_WINDOWS:
     multiprocessing.freeze_support()
@@ -18,7 +19,7 @@ class Scheduler():
     """
     scheduler
     """
-    
+
     def run_tester(self, cycle=CYCLE_TESTER):
         """
         run tester
@@ -33,7 +34,7 @@ class Scheduler():
             tester.run()
             loop += 1
             time.sleep(cycle)
-    
+
     def run_getter(self, cycle=CYCLE_GETTER):
         """
         run getter
@@ -48,7 +49,7 @@ class Scheduler():
             getter.run()
             loop += 1
             time.sleep(cycle)
-    
+
     def run_server(self):
         """
         run server for api
@@ -57,7 +58,7 @@ class Scheduler():
             logger.info('server not enabled, exit')
             return
         app.run(host=API_HOST, port=API_PORT, threaded=API_THREADED)
-    
+
     def run(self):
         global tester_process, getter_process, server_process
         try:
@@ -66,17 +67,17 @@ class Scheduler():
                 tester_process = multiprocessing.Process(target=self.run_tester)
                 logger.info(f'starting tester, pid {tester_process.pid}...')
                 tester_process.start()
-            
+
             if ENABLE_GETTER:
                 getter_process = multiprocessing.Process(target=self.run_getter)
                 logger.info(f'starting getter, pid{getter_process.pid}...')
                 getter_process.start()
-            
+
             if ENABLE_SERVER:
                 server_process = multiprocessing.Process(target=self.run_server)
                 logger.info(f'starting server, pid{server_process.pid}...')
                 server_process.start()
-            
+
             tester_process.join()
             getter_process.join()
             server_process.join()

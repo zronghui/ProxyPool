@@ -1,7 +1,7 @@
 from flask import Flask, g
-from proxypool.storages.redis import RedisClient
-from proxypool.setting import API_HOST, API_PORT, API_THREADED
 
+from proxypool.setting import API_HOST, API_PORT, API_THREADED
+from proxypool.storages.redis import RedisClient
 
 __all__ = ['app']
 

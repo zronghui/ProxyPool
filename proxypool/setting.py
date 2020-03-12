@@ -1,9 +1,10 @@
 import platform
 from os.path import dirname, abspath, join
+
 from environs import Env
 from loguru import logger
-from proxypool.utils.parse import parse_redis_connection_string
 
+from proxypool.utils.parse import parse_redis_connection_string
 
 env = Env()
 env.read_env()

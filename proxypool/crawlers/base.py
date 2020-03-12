@@ -1,11 +1,11 @@
-from retrying import retry
 import requests
 from loguru import logger
+from retrying import retry
 
 
 class BaseCrawler(object):
     urls = []
-    
+
     @retry(stop_max_attempt_number=3, retry_on_result=lambda x: x is None)
     def fetch(self, url, **kwargs):
         try:
@@ -14,7 +14,7 @@ class BaseCrawler(object):
                 return response.text
         except requests.ConnectionError:
             return
-    
+
     @logger.catch
     def crawl(self):
         """

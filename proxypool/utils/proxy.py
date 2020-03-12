@@ -1,5 +1,6 @@
-from proxypool.schemas import Proxy
 import re
+
+from proxypool.schemas import Proxy
 
 
 def is_valid_proxy(data):

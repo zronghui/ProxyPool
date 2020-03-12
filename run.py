@@ -1,6 +1,6 @@
-from proxypool.scheduler import Scheduler
 import argparse
 
+from proxypool.scheduler import Scheduler
 
 parser = argparse.ArgumentParser(description='ProxyPool')
 parser.add_argument('--processor', type=str, help='processor to run')
